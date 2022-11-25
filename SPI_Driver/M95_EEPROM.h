@@ -17,7 +17,7 @@ typedef enum {
 } M95_status_t;
 
 
-M95_status_t M95_Init(SPI_HandleTypeDef *hspi, uint8_t *pData);
+M95_status_t M95_Init(SPI_HandleTypeDef *hspi, uint8_t *pBuffer_RDSR);
 M95_status_t M95_Read(SPI_HandleTypeDef *hspi,uint8_t *pData);
 
 #endif /* M95_EEPROM_H_ */

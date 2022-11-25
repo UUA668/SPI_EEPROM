@@ -46,7 +46,9 @@ SPI_HandleTypeDef hspi1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uint8_t Data;
+uint8_t Data [EEPROM_SIZE];
+uint8_t Buffer_RDSR;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,7 +96,8 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-  M95_Init(&hspi1, &Data);
+  M95_Init(&hspi1, &Buffer_RDSR);
+  M95_Read(&hspi1,&Data);
  /* M95_Read(&hspi1, &Data[0]);*/
   /* USER CODE END 2 */
 
