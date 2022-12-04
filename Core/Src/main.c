@@ -32,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define EEPROM_SIZE 512
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -46,8 +46,9 @@ SPI_HandleTypeDef hspi1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uint8_t Data [EEPROM_SIZE];
-uint8_t Buffer_RDSR;
+uint8_t Read_Data [EEPROM_SIZE];
+uint8_t Write_Data [PAGE_SIZE];
+
 
 /* USER CODE END PV */
 
@@ -96,9 +97,12 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-  M95_Init(&hspi1, &Buffer_RDSR);
-  M95_Read(&hspi1,&Data);
- /* M95_Read(&hspi1, &Data[0]);*/
+  M95_Init(&hspi1);
+  M95_Read(&hspi1,&Read_Data[0]);
+  M95_Clear(&hspi1,&Write_Data[0]);
+  M95_Read(&hspi1,&Read_Data[0]);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -256,6 +260,9 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(WP_GPIO_Port, WP_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(U7_SN_GPIO_Port, U7_SN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
@@ -263,6 +270,13 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(U5_SN_GPIO_Port, U5_SN_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pins : WP_Pin U5_SN_Pin */
+  GPIO_InitStruct.Pin = WP_Pin|U5_SN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : U7_SN_Pin */
   GPIO_InitStruct.Pin = U7_SN_Pin;
@@ -277,13 +291,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(U6_SN_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : U5_SN_Pin */
-  GPIO_InitStruct.Pin = U5_SN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(U5_SN_GPIO_Port, &GPIO_InitStruct);
 
 }
 
