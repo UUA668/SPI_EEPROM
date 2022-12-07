@@ -32,6 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+/*define name for the EEPROMs*/
 
 /* USER CODE END PD */
 
@@ -46,7 +47,7 @@ SPI_HandleTypeDef hspi1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uint8_t Read_Data [EEPROM_SIZE];
+uint8_t Read_Data [READ_BUFFER_SIZE];
 uint8_t Write_Data [PAGE_SIZE];
 
 
@@ -98,9 +99,11 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   M95_Init(&hspi1);
-  M95_Read(&hspi1,&Read_Data[0]);
-  M95_Clear(&hspi1,&Write_Data[0]);
-  M95_Read(&hspi1,&Read_Data[0]);
+  M95_Read(&hspi1, &U5, 0x0000, 32, &Read_Data[0]);
+  M95_Read(&hspi1, &U6, 0x0000, 128, &Read_Data[0]);
+  M95_Read(&hspi1, &U7, 0x0000, 512, &Read_Data[0]);
+
+
 
 
   /* USER CODE END 2 */
