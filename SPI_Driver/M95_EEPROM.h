@@ -27,12 +27,14 @@ typedef struct{
 	uint32_t 			CSPort;			/*GPIO PORT Address for Device Chip Select Pin*/
 	uint8_t				CSPin;			/*GPIO Pin for Device Chip Select Pin*/
 	uint16_t			PageSize;		/*Page Size of Memory*/
+	uint64_t			MemSize;		/*Size of Memory in byte*/
 }EEPROM_Config_t;
 
 extern EEPROM_Config_t EEPROM_Dev_List[];
 
 extern M95_status_t M95_Init(SPI_HandleTypeDef *hspi);
 extern M95_status_t M95_Read(SPI_HandleTypeDef *hspi, EEPROM_Config_t *pEEPROM, uint32_t Start_Address, uint16_t Read_Size, uint8_t *pData);
+extern M95_status_t M95_Write(SPI_HandleTypeDef *hspi, EEPROM_Config_t *pEEPROM, uint32_t Start_Address, uint16_t Write_Size, uint8_t *pData);
 extern M95_status_t M95_Clear(SPI_HandleTypeDef *hspi, uint8_t *pData);
 extern M95_status_t M95_Wait_Until_WIP(SPI_HandleTypeDef *hspi);
 #endif /* M95_EEPROM_H_ */

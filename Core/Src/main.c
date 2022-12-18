@@ -99,11 +99,11 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   M95_Init(&hspi1);
-  M95_Read(&hspi1, &U5, 0x0000, 32, &Read_Data[0]);
-  M95_Read(&hspi1, &U6, 0x0000, 128, &Read_Data[0]);
-  M95_Read(&hspi1, &U7, 0x0000, 512, &Read_Data[0]);
-
-
+  /*M95_Read(&hspi1, &U5, 0x00000000, 512, &Read_Data[0]);*/
+  M95_Read(&hspi1, &U6, 0x000007F7F, 128, &Read_Data[0]);
+  /*M95_Read(&hspi1, &U7, 0x0000, 512, &Read_Data[0]);*/
+  M95_Write(&hspi1, &U6, 0x00007FF0, 16, &Write_Data[0]);
+  M95_Read(&hspi1, &U6, 0x00007FF0, 16, &Read_Data[0]);
 
 
   /* USER CODE END 2 */
